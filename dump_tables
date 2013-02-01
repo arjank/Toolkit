@@ -1,0 +1,9 @@
+#!/bin/bash
+
+readonly g_sDbHostName='localhost'
+readonly g_sDbUserName=''
+readonly g_sDbPassword=''
+readonly g_sDbDatabase=''
+
+mysql -u${g_sDbUserName} -p${g_sDbPassword} -h${g_sDbHostName} information_schema --skip-column-names --batch -e "select table_name from tables where table_type='base table' and table_schema='${g_sDbDatabase}'" | xargs mysqldump -u${g_sDbUserName} -p${g_sDbPassword} -h${g_sDbHostName} ${g_sDbDatabase} > dump_tables.sql
+

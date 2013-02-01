@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#Space separated list of tables to keep
+readonly g_sKeepers=''
+
+readonly g_sDbHostName='localhost'
+readonly g_sDbUserName=''
+readonly g_sDbPassword=''
+readonly g_sDbDatabase=''
+readonly g_sKeepersFile='keepers'$(date +%Y%m%d)'.sql'
+
+mysqldump -u${g_sDbUserName} -p${g_sDbPassword} -h${g_sDbHostName} ${g_sDbDatabase} ${g_sKeepers} > ${g_sKeepersFile}
+mysql     -u${g_sDbUserName} -p${g_sDbPassword} -h${g_sDbHostName} ${g_sDbDatabase} < dump_tables.sql
+mysql     -u${g_sDbUserName} -p${g_sDbPassword} -h${g_sDbHostName} ${g_sDbDatabase} < ${g_sKeepersFile}
+
+# Compress the created dump file to save some space
+tar -zcvf ${g_sKeepersFile}.tgz ${g_sKeepersFile}
+rm -f ${g_sKeepersFile}

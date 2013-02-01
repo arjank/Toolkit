@@ -1,0 +1,9 @@
+#!/bin/bash
+
+readonly g_sDbHostName='localhost'
+readonly g_sDbUserName=''
+readonly g_sDbPassword=''
+readonly g_sDbDatabase=''
+
+mysqldump -u${g_sDbUserName} -p${g_sDbPassword} -h${g_sDbHostName} --no-create-info --no-data --routines ${g_sDbDatabase} | sed s/DEFINER=\`.*\`@\`\[^\`\]\*\`//g | sed s/JOIN\\*\\/\ \\/\\*\!50003/JOIN/g > dump_routines.sql
+
