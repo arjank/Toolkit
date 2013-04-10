@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Note: This file assumes that it is run in a git project folder.
+
+declare -a g_aBranches
+declare -a g_aResults
+
+g_aBranches=$(git ls-remote . | grep /remotes/ | cut -f2 | cut -d/ -f3-)
+
+for i in $g_aBranches; do
+    row=$(git show -s --format="%ci" $i)
+    row="$row $i"
+#    g_aResults[${#g_aResults[@]}]="$row"
+    echo $row
+done;
+
+for i in "${g_aResults[@]}"; do
+    echo $i
+done;
